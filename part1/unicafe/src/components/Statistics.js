@@ -1,5 +1,5 @@
 import Header from "./Header";
-import Stat from "./Stat";
+import StatisticsLine from "./StatisticsLine";
 
 const Statistics = (props) => {
   const { good, neutral, bad } = props;
@@ -9,12 +9,12 @@ const Statistics = (props) => {
   return (
     <p>
       <Header title={"statistics"} />
-      <Stat text={"good"} count={good} />
-      <Stat text={"neutral"} count={neutral} />
-      <Stat text={"bad"} count={bad} />
-      <Stat text={"all"} count={total} />
-      <Stat text={"average"} count={avg} />
-      <Stat text={"positive"} count={`${positivePer}%`} />
+      <StatisticsLine text={"good"} count={good} />
+      <StatisticsLine text={"neutral"} count={neutral} />
+      <StatisticsLine text={"bad"} count={bad} />
+      <StatisticsLine text={"all"} count={total} />
+      <StatisticsLine text={"average"} count={avg} />
+      <StatisticsLine text={"positive"} count={`${positivePer}%`} />
     </p>
   );
 };

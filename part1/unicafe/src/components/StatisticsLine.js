@@ -1,4 +1,4 @@
-const Stat = (props) => {
+const StatisticsLine = (props) => {
   const { text, count } = props;
   return (
     <p>
@@ -7,4 +7,4 @@ const Stat = (props) => {
   );
 };
 
-export default Stat;
+export default StatisticsLine;
