@@ -37,12 +37,6 @@ const Statistics = (props) => {
           </tr>
         </tbody>
       </table>
-      {/* <StatisticsLine text={"good"} count={good} />
-      <StatisticsLine text={"neutral"} count={neutral} />
-      <StatisticsLine text={"bad"} count={bad} />
-      <StatisticsLine text={"all"} count={total} />
-      <StatisticsLine text={"average"} count={avg} />
-      <StatisticsLine text={"positive"} count={`${positivePer}%`} /> */}
     </>
   );
 };
