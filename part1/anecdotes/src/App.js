@@ -17,7 +17,7 @@ const App = () => {
   const [maxPointIndex, setMaxPointIndex] = useState(0);
 
   const moveToNextAnecdote = () => {
-    const randomIndex = Math.floor(Math.random() * (8 - 1) + 1);
+    const randomIndex = Math.floor(Math.random() * anecdotes.length);
     setSelected(randomIndex);
   };
 
