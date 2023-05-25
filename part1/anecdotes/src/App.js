@@ -55,6 +55,7 @@ const App = () => {
         <>
           <h3>Anecdotes with most votes</h3>
           <p>{anecdotes[maxPointIndex]}</p>
+          <p>has {points[maxPointIndex]} votes</p>
         </>
       ) : (
         <p>No votes yet</p>
