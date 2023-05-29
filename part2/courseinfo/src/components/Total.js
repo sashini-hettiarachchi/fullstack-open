@@ -4,7 +4,7 @@ const Total = ({ parts }) => {
       total of{" "}
       {parts.reduce((prevSum, part) => {
         return prevSum + part.exercises;
-      }, 0)}
+      }, 0)}{" "}
       exercises
     </h2>
   );
