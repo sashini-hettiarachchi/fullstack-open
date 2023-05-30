@@ -11,8 +11,12 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-    setPersons([...persons, { name: newName }]);
-    setNewName("");
+    const isNameExist = persons.findIndex( p => p.name === newName) >= 0
+    if(isNameExist){
+      alert(`${newName} is already added to phonebook`)
+    }else{
+      setPersons([...persons, { name: newName }]);
+    }
   };
 
   return (
