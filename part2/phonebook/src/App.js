@@ -1,17 +1,19 @@
 import { useState } from "react";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas", number: "00-99001-19991" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "00-99001-19991" },
+  ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
+  const [filteredPersons, setFilteredPersons] = useState([]);
+  console.log("🚀 ~ file: App.js:10 ~ App ~ filteredPersons:", filteredPersons);
 
   const handleNameChange = (event) => {
-    event.preventDefault();
     setNewName(event.target.value);
   };
 
   const handleNumberChange = (event) => {
-    event.preventDefault();
     setNewNumber(event.target.value);
   };
 
@@ -21,13 +23,22 @@ const App = () => {
     if (isNameExist) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      setPersons([...persons, { name: newName, number : newNumber }]);
+      setPersons([...persons, { name: newName, number: newNumber }]);
     }
+  };
+
+  const handleFilter = (event) => {
+    const regex = new RegExp(`.*${event.target.value}.*`, "gmi");
+    const filterP = persons.filter((p) => regex.test(p.name));
+    setFilteredPersons(filterP);
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <div>
+        filter shown with <input onChange={handleFilter} />
+      </div>
       <form>
         <div>
           name: <input onChange={handleNameChange} />
@@ -41,10 +52,24 @@ const App = () => {
           </button>
         </div>
       </form>
-      <h2>Numbers</h2>
+      <h2>Filtered Numbers</h2>
       <div>
+        {filteredPersons.length ? (
+          filteredPersons.map((person) => (
+            <p key={person.name}>
+              {person.name} {person.number}
+            </p>
+          ))
+        ) : (
+          <p>No persons</p>
+        )}
+      </div>
+      <div>
+        <h2>All Numbers</h2>
         {persons.map((person) => (
-          <p key={person.name}>{person.name} {person.number}</p>
+          <p key={person.name}>
+            {person.name} {person.number}
+          </p>
         ))}
       </div>
     </div>
