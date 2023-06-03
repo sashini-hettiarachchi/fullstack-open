@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
-import { create, deletePerson, getAll } from "./services/persons";
+import { create, deletePerson, getAll, update } from "./services/persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -26,9 +26,30 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault();
-    const isNameExist = persons.findIndex((p) => p.name === newName) >= 0;
-    if (isNameExist) {
-      alert(`${newName} is already added to phonebook`);
+    const existingPeron = persons.find((p) => p.name === newName);
+    console.log(
+      "🚀 ~ file: App.js:30 ~ addName ~ existingPeron:",
+      existingPeron
+    );
+    if (existingPeron) {
+      const agreeToUpdate = window.confirm(
+        `${newName}  is already added to phone book, replace the old number with a new one?`
+      );
+      if (agreeToUpdate) {
+        const updatePersonObj = {
+          name: existingPeron?.name,
+          number: newNumber,
+          id: existingPeron?.id,
+        };
+        update(existingPeron?.id, updatePersonObj).then((response) => {
+          if (response.status === 200) {
+            const newPersonList = [...persons];
+            newPersonList[persons.findIndex((p) => p.name === newName)] =
+              updatePersonObj;
+            setPersons(newPersonList);
+          }
+        });
+      }
     } else {
       create({
         name: newName,
@@ -60,15 +81,14 @@ const App = () => {
   };
 
   const handleDelete = (id, name) => {
-   const agreeToDelete = window.confirm(`Delete ${name}`)
-   if(agreeToDelete){
-    deletePerson(id).then((response) => {
-      if (response.status === 200) {
-        setPersons([...persons.filter((p) => p.id !== id)]);
-      }
-    });
-   }
-    
+    const agreeToDelete = window.confirm(`Delete ${name}`);
+    if (agreeToDelete) {
+      deletePerson(id).then((response) => {
+        if (response.status === 200) {
+          setPersons([...persons.filter((p) => p.id !== id)]);
+        }
+      });
+    }
   };
 
   return (
