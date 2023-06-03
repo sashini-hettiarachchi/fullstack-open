@@ -1,18 +1,21 @@
-const Persons = ({ persons }) => {
-    return (
-      <div>
-        {persons.length ? (
-          persons.map((person) => (
-            <p key={person.name}>
-              {person.name} {person.number}
-            </p>
-          ))
-        ) : (
-          <p>No persons</p>
-        )}
-      </div>
-    );
-  };
-  
-  export default Persons;
-  
+// import { deletePerson } from "../services/persons";
+
+const Persons = ({ persons, handleDelete }) => {
+  return (
+    <div>
+      {persons.map((person) => (
+        <div key={person.id}>
+          <p>
+            {person.name} {person.number}
+            {"    "}
+            <button onClick={() => handleDelete(person.id, person.name)}>
+              delete
+            </button>
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+export default Persons;
