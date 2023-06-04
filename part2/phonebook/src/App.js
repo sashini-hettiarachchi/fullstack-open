@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 import { create, deletePerson, getAll, update } from "./services/persons";
 
 const App = () => {
@@ -9,6 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     getAll().then((response) => {
@@ -27,10 +29,6 @@ const App = () => {
   const addName = (event) => {
     event.preventDefault();
     const existingPeron = persons.find((p) => p.name === newName);
-    console.log(
-      "🚀 ~ file: App.js:30 ~ addName ~ existingPeron:",
-      existingPeron
-    );
     if (existingPeron) {
       const agreeToUpdate = window.confirm(
         `${newName}  is already added to phone book, replace the old number with a new one?`
@@ -48,7 +46,13 @@ const App = () => {
               updatePersonObj;
             setPersons(newPersonList);
           }
-        });
+          setNotification(
+            {message : `Updated ${existingPeron?.name} number as ${newNumber}`, type : "success"}
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
+        }).catch(err =>  console.log("error" , err))
       }
     } else {
       create({
@@ -65,8 +69,14 @@ const App = () => {
               id,
             },
           ]);
+          setNotification(
+            {message : `Added ${newName}`, type : "success"}
+          )
+          setTimeout(() => {
+            setNotification(null)
+          }, 5000)
         }
-      });
+      }).catch(err =>  console.log("error" , err));
     }
   };
 
@@ -94,6 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      {notification && <Notification message={notification?.message} type = {notification?.type}  />}
       <Filter handleFilter={handleFilter} />
       <PersonForm
         handleNameChange={handleNameChange}
