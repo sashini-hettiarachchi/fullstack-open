@@ -10,7 +10,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filteredPersons, setFilteredPersons] = useState([]);
-  const [notification, setNotification] = useState(null)
+  const [notification, setNotification] = useState(null);
 
   useEffect(() => {
     getAll().then((response) => {
@@ -39,44 +39,55 @@ const App = () => {
           number: newNumber,
           id: existingPeron?.id,
         };
-        update(existingPeron?.id, updatePersonObj).then((response) => {
-          if (response.status === 200) {
-            const newPersonList = [...persons];
-            newPersonList[persons.findIndex((p) => p.name === newName)] =
-              updatePersonObj;
-            setPersons(newPersonList);
-          }
-          setNotification(
-            {message : `Updated ${existingPeron?.name} number as ${newNumber}`, type : "success"}
-          )
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
-        }).catch(err =>  console.log("error" , err))
+        update(existingPeron?.id, updatePersonObj)
+          .then((response) => {
+            if (response.status === 200) {
+              const newPersonList = [...persons];
+              newPersonList[persons.findIndex((p) => p.name === newName)] =
+                updatePersonObj;
+              setPersons(newPersonList);
+            }
+            setNotification({
+              message: `Updated ${existingPeron?.name} number as ${newNumber}`,
+              type: "success",
+            });
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+          })
+          .catch((err) => {
+            setNotification({
+              message: `Information of ${existingPeron?.name} has already been removed from server`,
+              type: "error",
+            });
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+          });
       }
     } else {
       create({
         name: newName,
         number: newNumber,
-      }).then((response) => {
-        if (response.status === 201) {
-          const { name, id, number } = response.data;
-          setPersons([
-            ...persons,
-            {
-              name,
-              number,
-              id,
-            },
-          ]);
-          setNotification(
-            {message : `Added ${newName}`, type : "success"}
-          )
-          setTimeout(() => {
-            setNotification(null)
-          }, 5000)
-        }
-      }).catch(err =>  console.log("error" , err));
+      })
+        .then((response) => {
+          if (response.status === 201) {
+            const { name, id, number } = response.data;
+            setPersons([
+              ...persons,
+              {
+                name,
+                number,
+                id,
+              },
+            ]);
+            setNotification({ message: `Added ${newName}`, type: "success" });
+            setTimeout(() => {
+              setNotification(null);
+            }, 5000);
+          }
+        })
+        .catch((err) => console.log("error", err));
     }
   };
 
@@ -104,7 +115,12 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      {notification && <Notification message={notification?.message} type = {notification?.type}  />}
+      {notification && (
+        <Notification
+          message={notification?.message}
+          type={notification?.type}
+        />
+      )}
       <Filter handleFilter={handleFilter} />
       <PersonForm
         handleNameChange={handleNameChange}
