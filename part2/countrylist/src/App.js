@@ -26,6 +26,10 @@ const App = () => {
     }
   };
 
+  const showCountryDetails = () => {
+
+  }
+
   return (
     <div>
       <Filter handleFilter={handleFilter} />
@@ -49,7 +53,7 @@ const App = () => {
               </div>
             );
           }
-          return <p key={c.name.common}>{c.name.common}</p>;
+          return <><p key={c.name.common}>{c.name.common}</p><button onClick={showCountryDetails}>show</button></>;
         })
       )}
     </div>
