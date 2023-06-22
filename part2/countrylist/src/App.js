@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import Filter from "./components/Filter";
 import { getAll } from "./services/country";
+import Country from "./components/Country";
 
 const App = () => {
   const [counties, setCountries] = useState([]);
   const [filteredCountries, setFilteredCountries] = useState([]);
+  const [showCountry, setShowCountry] = useState()
 
   useEffect(() => {
     getAll()
@@ -26,8 +28,8 @@ const App = () => {
     }
   };
 
-  const showCountryDetails = () => {
-
+  const showCountryDetails = (c) => {
+    setShowCountry(c)
   }
 
   return (
@@ -39,23 +41,16 @@ const App = () => {
         filteredCountries?.map((c) => {
           if (filteredCountries.length === 1) {
             return (
-              <div key={c.name}>
-                <h1>{c.name.common}</h1>
-                <p>Capital is {c?.capital[0]}</p>
-                <p>Area is {c.area}</p>
-                <h3>Languages</h3>
-                <ul>
-                  {Object.values(c.languages)?.map((lan) => (
-                    <li key={lan}>{lan}</li>
-                  ))}
-                </ul>
-                <img src={c?.flags?.png} alt={c?.flags?.alt} />
-              </div>
+             <Country c={c} key={c.name}/>
             );
           }
-          return <><p key={c.name.common}>{c.name.common}</p><button onClick={showCountryDetails}>show</button></>;
+          return <><p key={c.name.common}>{c.name.common}</p><button onClick={()=>showCountryDetails(c)}>show</button></>;
         })
       )}
+      {
+        showCountry && 
+        <Country c={showCountry}/>
+      }
     </div>
   );
 };
